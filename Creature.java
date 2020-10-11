@@ -1,3 +1,4 @@
+package src;
 public class Creature extends Displayable{
     public Creature(){
         System.out.println("Constructing creature");
@@ -5,12 +6,12 @@ public class Creature extends Displayable{
 
     @Override
     public void setHp(int h){
-        System.out.println("Setting Hp to "+h);
+        System.out.println("Setting creature Hp to "+h);
     }
 
     @Override
     public void setHpMoves(int hpm){
-        System.out.println("Setting Hp moves to "+hpm);
+        System.out.println("Setting creature Hp moves to "+hpm);
     }
 
     public void setDeathAction(CreatureAction da){

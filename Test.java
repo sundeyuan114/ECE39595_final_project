@@ -1,4 +1,4 @@
-
+package src;
 import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,7 +22,7 @@ public class Test {
            break;
         default:
            System.out.println("usage: java Test <xmlfilename>");
-	   return;
+	    return;
         }
 
 	// Create a saxParserFactory, that will allow use to create a parser
@@ -40,11 +40,11 @@ public class Test {
 	    // just copy this.  This will parse the xml file given by fileName
             saxParser.parse(new File(fileName), handler);
 	    // This will change depending on what kind of XML we are parsing\
-            Dungeon[] dungeons = handler.getdungeon();
+            Room[] rooms = handler.get();
 	    // print out all of the students.  This will change depending on 
 	    // what kind of XML we are parsing
-            for (Dungeon dungeon : dungeons) {
-                System.out.println(dungeon);
+            for (Room room : rooms) {
+                System.out.println(room);
             }
             /*
              * the above is a different form of 

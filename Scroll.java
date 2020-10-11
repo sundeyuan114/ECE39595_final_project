@@ -1,3 +1,4 @@
+package src;
 public class Scroll extends Item{
     public Scroll(String _name){
         System.out.println("Setting Scroll name to "+_name);

@@ -1,3 +1,4 @@
+package src;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -29,11 +30,14 @@ public class DungeonXMLHandler extends DefaultHandler {
 
     private Dungeon dungeonBeingParsed = null;//Dungeon -> {Rooms, Passages}
 
-    //private Rooms roomsBeingParsed = null;//Rooms -> {room}
-    private Room roomBeingParsed = null;//
+    private Room roomBeingParsed = null;//Rooms -> {room}
     private Monster monsterBeingParsed = null;
     private Player playerBeingParsed = null;
     private CreatureAction creatureActionBeingParsed = null;
+    private Scroll scrollBeingParsed = null;
+    private Sword swordBeingParsed = null;
+    private Armor armorBeingParsed = null;
+
 
     //private Passages passagesBeingParsed = null;
     private Passage passageBeingParsed = null;
@@ -44,6 +48,7 @@ public class DungeonXMLHandler extends DefaultHandler {
     //所以对这种数值我们是需要用boolean来做一个开关的.
 
     private boolean bvisible = false;
+    private boolean binvisible = false;
     private boolean bposX = false;
     private boolean bposY = false;
     private boolean bwidth = false;
@@ -55,6 +60,7 @@ public class DungeonXMLHandler extends DefaultHandler {
     private boolean bhpMoves = false;
 
     private boolean bactionmessage = false;
+    private boolean bactionCharValue = false;
     private boolean bactionIntValue = false;
 
     public ArrayList<Displayable> getDungeons() {
@@ -128,9 +134,13 @@ public class DungeonXMLHandler extends DefaultHandler {
             bactionmessage = true;
         } else if (qName.equalsIgnoreCase("actionIntValue")) {
             bactionIntValue = true;
+        } else if (qName.equalsIgnoreCase("actionCharValue")) {
+            bactionCharValue = true;
         } else if (qName.equalsIgnoreCase("visible")) {
             bvisible = true;
-        } else if (qName.equalsIgnoreCase("Monster")) {
+        } else if (qName.equalsIgnoreCase("invisible")) {
+            binvisible = true;
+        }else if (qName.equalsIgnoreCase("Monster")) {
             String name = attributes.getValue("name");
             int roomNumb = Integer.parseInt(attributes.getValue("room"));
             int serialNumb = Integer.parseInt(attributes.getValue("serial"));
@@ -166,6 +176,25 @@ public class DungeonXMLHandler extends DefaultHandler {
 
             //stack是存<Displayable>的, StackA是存Action的,注意.
             stackA.push(creatureActionBeingParsed);
+        } else if (qName.equalsIgnoreCase("Scroll")){
+            String name = attributes.getValue("name");
+            int roomNumb = Integer.parseInt(attributes.getValue("room"));
+            int serialNumb = Integer.parseInt(attributes.getValue("serial"));
+            scrollBeingParsed = new Scroll(name);
+
+            dungeonBeingParsed.addItem(scrollBeingParsed);
+            scrollBeingParsed.setID(roomNumb,serialNumb);
+            stack.push(scrollBeingParsed);
+        } else if (qName.equalsIgnoreCase("Sword")){
+            swordBeingParsed = new Sword(attributes.getValue("name"));
+            dungeonBeingParsed.addItem(swordBeingParsed);
+            swordBeingParsed.setID(Integer.parseInt(attributes.getValue("room")),Integer.parseInt(attributes.getValue("serial")));
+            stack.push(swordBeingParsed);
+        } else if (qName.equalsIgnoreCase("Armor")){
+            armorBeingParsed = new Armor(attributes.getValue("name"));
+            dungeonBeingParsed.addItem(armorBeingParsed);
+            armorBeingParsed.setID(Integer.parseInt(attributes.getValue("room")),Integer.parseInt(attributes.getValue("serial")));
+            stack.push(armorBeingParsed);
         } else {
             // BUG
             System.out.println("Unknown qname: " + qName);
@@ -230,6 +259,9 @@ public class DungeonXMLHandler extends DefaultHandler {
         } else if (bvisible) {
             currentBeingParsed.setVisible();
             bvisible = false;
+        } else if(binvisible) {
+            currentBeingParsed.setInvisible();
+            binvisible = false;
         } else if (qName.equalsIgnoreCase("Monster")){
             monsterBeingParsed = null;
             stack.pop();
@@ -243,6 +275,14 @@ public class DungeonXMLHandler extends DefaultHandler {
             stackA.pop();
         } else if(qName.equalsIgnoreCase("Rooms")){
             //do nothing.
+        } else if (qName.equalsIgnoreCase("Armor")) {
+            stack.pop();
+        } else if (qName.equalsIgnoreCase("Sword")) {
+            stack.pop();
+        } else if (qName.equalsIgnoreCase("Sword")){
+            stack.pop();
+        } else if (qName.equalsignoreCase("Scroll")){
+            stack.pop();
         } else if(qName.equalsIgnoreCase("Dungeon")) {
             dungeonBeingParsed = null;
 

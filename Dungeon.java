@@ -1,7 +1,22 @@
+package src;
 public class Dungeon{
 
+    private String name;
+    private int width;
+    private int topHeight;
+    private int gameHeight;
+    private int bottomHeight;
+
+    public Dungeon(String _name,int wid,int topHeit,int gameHeit,int bottomHeit){
+        name = _name;
+        width = wid;
+        topHeight = topHeit;
+        gameHeight = gameHeit;
+        bottomHeight = bottomHeit;
+    }
+
     public Dungeon getDungeon(String _name, int width, int gameHeight){
-        System.out.println("Constructing ");
+        System.out.println("Constructing Dungeon"+_name+"width "+width+" gameHeight "+gameHeight);
         return this;
     }
 

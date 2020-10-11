@@ -1,3 +1,4 @@
+package src;
 public class Monster extends Creatures{
     public Monster(){
         System.out.println("Constructing monster object");
