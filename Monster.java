@@ -1,5 +1,4 @@
-package src;
-public class Monster extends Creatures{
+public class Monster extends Creature{
     public Monster(){
         System.out.println("Constructing monster object");
     }

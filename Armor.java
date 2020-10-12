@@ -1,4 +1,3 @@
-package src;
 public class Armor extends Item{
     String name;
     int room;

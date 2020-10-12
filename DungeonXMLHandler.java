@@ -1,4 +1,3 @@
-package src;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -17,7 +16,7 @@ public class DungeonXMLHandler extends DefaultHandler {
     private StringBuilder data = null;
 
     //其实在我们的算法里面是不需要这个arraylist的,但是为了给他的getdungeon传回去.
-    private ArrayList<Displayable> dungeons = new ArrayList<Displayable>();//getdungeon要把这个return回去
+    private ArrayList<Displayable> displayables = new ArrayList<Displayable>();//getdungeon要把这个return回去
     private Stack<Displayable> stack = new Stack<Displayable>(); //每一层级里面都有不同的posX,posY,width,之类的
 
     //我刚开始写的时候没有这个,但是写着写着发现XML里面有一些CreatureAction之类的东西,
@@ -62,9 +61,10 @@ public class DungeonXMLHandler extends DefaultHandler {
     private boolean bactionmessage = false;
     private boolean bactionCharValue = false;
     private boolean bactionIntValue = false;
+    private boolean bitemIntValue = false;
 
-    public ArrayList<Displayable> getDungeons() {
-        return dungeons;
+    public ArrayList<Displayable> getDisplayables() {
+        return displayables;
     }
 
     @Override
@@ -140,7 +140,9 @@ public class DungeonXMLHandler extends DefaultHandler {
             bvisible = true;
         } else if (qName.equalsIgnoreCase("invisible")) {
             binvisible = true;
-        }else if (qName.equalsIgnoreCase("Monster")) {
+        } else if (qName.equalsIgnoreCase("ItemIntValue")) {
+            bitemIntValue = true;
+        }  else if (qName.equalsIgnoreCase("Monster")) {
             String name = attributes.getValue("name");
             int roomNumb = Integer.parseInt(attributes.getValue("room"));
             int serialNumb = Integer.parseInt(attributes.getValue("serial"));
@@ -220,7 +222,7 @@ public class DungeonXMLHandler extends DefaultHandler {
         } else if (bposY) {
             int y = Integer.parseInt(data.toString());
             currentBeingParsed.SetPosY(y);
-            bposX = false;
+            bposY = false;
         } else if (bwidth) {
             int width = Integer.parseInt(data.toString());
             currentBeingParsed.SetWidth(width);
@@ -246,6 +248,10 @@ public class DungeonXMLHandler extends DefaultHandler {
             int hpMoves = Integer.parseInt(data.toString());
             currentBeingParsed.setHpMove(hpMoves);
             bhpMoves = false;
+        } else if (bitemIntValue){
+            int intVal = Integer.parseInt(data.toString());
+            currentBeingParsed.setIntValue(intVal);
+            bitemIntValue = false;
         } else if (bactionmessage) {
             String ActionMessage = data.toString();
             Action tempAction = stackA.peek();
@@ -256,7 +262,13 @@ public class DungeonXMLHandler extends DefaultHandler {
             Action tempAction = stackA.peek();
             tempAction.setIntValue(intValue);
             bactionIntValue = false;
-        } else if (bvisible) {
+        } else if (bactionCharValue){
+            int charVal = Integer.parseInt(data.toString());
+            Action tempAction = stackA.peek();
+            tempAction.setCharValue((char)charVal);
+            bactionCharValue = false;
+        }
+        else if (bvisible) {
             currentBeingParsed.setVisible();
             bvisible = false;
         } else if(binvisible) {
@@ -281,7 +293,7 @@ public class DungeonXMLHandler extends DefaultHandler {
             stack.pop();
         } else if (qName.equalsIgnoreCase("Sword")){
             stack.pop();
-        } else if (qName.equalsignoreCase("Scroll")){
+        } else if (qName.equalsIgnoreCase("Scroll")){
             stack.pop();
         } else if(qName.equalsIgnoreCase("Dungeon")) {
             dungeonBeingParsed = null;

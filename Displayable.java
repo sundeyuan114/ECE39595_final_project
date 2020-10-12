@@ -1,4 +1,3 @@
-package src;
 public class Displayable{
 
     public Displayable(){
@@ -46,7 +45,7 @@ public class Displayable{
     }
 
     public  void SetHeight(int y){
-        System.out.println("sETTING height = "+y);
+        System.out.println("Setting height = "+y);
     }
 
 }

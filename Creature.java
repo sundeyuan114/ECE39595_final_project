@@ -1,4 +1,3 @@
-package src;
 public class Creature extends Displayable{
     public Creature(){
         System.out.println("Constructing creature");
@@ -10,7 +9,7 @@ public class Creature extends Displayable{
     }
 
     @Override
-    public void setHpMoves(int hpm){
+    public void setHpMove(int hpm){
         System.out.println("Setting creature Hp moves to "+hpm);
     }
 

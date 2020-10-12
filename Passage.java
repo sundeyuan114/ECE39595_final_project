@@ -1,11 +1,10 @@
-package src;
 public class Passage extends Structure{
     public Passage(){
         System.out.println("Constructing passage");
     }
 
     public void setName(String _name){
-        System.out.println("Setting passage name to be "+name);
+        System.out.println("Setting passage name to be "+_name);
     }
 
     public void setID(int room1,int room2){

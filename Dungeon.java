@@ -1,4 +1,3 @@
-package src;
 public class Dungeon{
 
     private String name;
@@ -13,6 +12,7 @@ public class Dungeon{
         topHeight = topHeit;
         gameHeight = gameHeit;
         bottomHeight = bottomHeit;
+        System.out.println("Constructing Dungeon "+name);
     }
 
     public Dungeon getDungeon(String _name, int width, int gameHeight){
@@ -21,7 +21,7 @@ public class Dungeon{
     }
 
     public void addRoom(Room room){
-        System.out.println("Adding room + " room);
+        System.out.println("Adding room  " +room);
     }
 
     public void addCreature(Creature creature){
