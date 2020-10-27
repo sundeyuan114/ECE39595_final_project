@@ -5,9 +5,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.ArrayList;
 import java.util.Stack;
 
-//这次的project XMLfile不大一样. 我上面还有passage之类的没加进去,你照着我上面这个格式看看我还缺哪个 自己加一下。还有 有一些
-//class里面我加了一点pdf没有的功能,如果加了功能应该有comment说明.
-//可以的话你帮我补一补,测试一下,我起床再继续奋战》
+
 
 public class DungeonXMLHandler extends DefaultHandler {
 
@@ -36,7 +34,7 @@ public class DungeonXMLHandler extends DefaultHandler {
     private Scroll scrollBeingParsed = null;
     private Sword swordBeingParsed = null;
     private Armor armorBeingParsed = null;
-
+    private ItemAction itemActionBeingParsed = null;
 
     //private Passages passagesBeingParsed = null;
     private Passage passageBeingParsed = null;
@@ -114,7 +112,18 @@ public class DungeonXMLHandler extends DefaultHandler {
             dungeonBeingParsed.addRoom(roomBeingParsed);
 
             stack.push(roomBeingParsed);
-        } else if (qName.equalsIgnoreCase("posX")) {
+        }  else if (qName.equalsIgnoreCase("Passages")) {
+
+        } else if (qName.equalsIgnoreCase("Passage")){
+            String room1 = attributes.getValue("room1");
+            String room2 = attributes.getValue("room2");
+            passageBeingParsed = new Passage();
+            passageBeingParsed.setID(Integer.parseInt(room1),Integer.parseInt(room2));
+            dungeonBeingParsed.addPassage(passageBeingParsed);
+
+            stack.push(passageBeingParsed);
+        }
+        else if (qName.equalsIgnoreCase("posX")) {
             bposX = true;
         } else if (qName.equalsIgnoreCase("posY")) {
             bposY = true;
@@ -162,8 +171,12 @@ public class DungeonXMLHandler extends DefaultHandler {
             playerBeingParsed = new Player();
 
             //把这Player趁着reference还在 加到他该在的位置里面去
-            dungeonBeingParsed.addCreature(playerBeingParsed);
-            roomBeingParsed.setCreature(playerBeingParsed);
+            if (dungeonBeingParsed != null){
+                dungeonBeingParsed.addCreature(playerBeingParsed);
+            }
+            if (roomBeingParsed != null){
+                roomBeingParsed.setCreature(playerBeingParsed);
+            }
 
             stack.push(playerBeingParsed);
         } else if (qName.equalsIgnoreCase("CreatureAction")) {
@@ -178,7 +191,18 @@ public class DungeonXMLHandler extends DefaultHandler {
 
             //stack是存<Displayable>的, StackA是存Action的,注意.
             stackA.push(creatureActionBeingParsed);
-        } else if (qName.equalsIgnoreCase("Scroll")){
+        } else if (qName.equalsIgnoreCase("ItemAction")){
+            //<ItemAction name="BlessArmor" type="item">
+
+            String name = attributes.getValue("name");
+            String type = attributes.getValue("type");
+            itemActionBeingParsed = new ItemAction((Item)stack.peek());
+            itemActionBeingParsed.setName(name);
+            itemActionBeingParsed.setType(type);
+
+            stackA.push(itemActionBeingParsed);
+        }
+        else if (qName.equalsIgnoreCase("Scroll")){
             String name = attributes.getValue("name");
             int roomNumb = Integer.parseInt(attributes.getValue("room"));
             int serialNumb = Integer.parseInt(attributes.getValue("serial"));
@@ -263,9 +287,9 @@ public class DungeonXMLHandler extends DefaultHandler {
             tempAction.setIntValue(intValue);
             bactionIntValue = false;
         } else if (bactionCharValue){
-            int charVal = Integer.parseInt(data.toString());
+            char charVal = data.toString().charAt(0);
             Action tempAction = stackA.peek();
-            tempAction.setCharValue((char)charVal);
+            tempAction.setCharValue(charVal);
             bactionCharValue = false;
         }
         else if (bvisible) {
@@ -280,12 +304,19 @@ public class DungeonXMLHandler extends DefaultHandler {
         } else if(qName.equalsIgnoreCase("Room")) {
             roomBeingParsed = null;
             stack.pop();
+        } else if (qName.equalsIgnoreCase("Passages")){
+
+        } else if (qName.equalsIgnoreCase("Passage")) {
+            passageBeingParsed = null;
+            stack.pop();
         } else if(qName.equalsIgnoreCase("Player")) {
             playerBeingParsed = null;
             stack.pop();
         } else if(qName.equalsIgnoreCase("CreatureAction")){
             stackA.pop();
-        } else if(qName.equalsIgnoreCase("Rooms")){
+        } else if (qName.equalsIgnoreCase("ItemAction")){
+            stackA.pop();
+        }else if(qName.equalsIgnoreCase("Rooms")){
             //do nothing.
         } else if (qName.equalsIgnoreCase("Armor")) {
             stack.pop();
