@@ -1,3 +1,4 @@
+package game;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -104,8 +105,7 @@ public class DungeonXMLHandler extends DefaultHandler {
             //我们的这个所以push不push没有啥太大意义,反正最后那这一串数据都会丢失的.
             //为了以后方便提前把格式写好了.
         } else if (qName.equalsIgnoreCase("Rooms")) {
-            //do nothing.Rooms 这一层不会有信息而且Rooms里面只有rooms.
-            //多一层stack也就没有任何意义了
+            //add rooms to dungeon
         } else if (qName.equalsIgnoreCase("Room")) {
             String iD = attributes.getValue("room");
             roomBeingParsed = new Room(iD);
@@ -173,10 +173,15 @@ public class DungeonXMLHandler extends DefaultHandler {
             //把这Player趁着reference还在 加到他该在的位置里面去
             if (dungeonBeingParsed != null){
                 dungeonBeingParsed.addCreature(playerBeingParsed);
+                dungeonBeingParsed.setPlayer(playerBeingParsed);
+                // set player to dungeon,
+                // set dungeon to player
+                playerBeingParsed.setDungeon(dungeonBeingParsed);
             }
             if (roomBeingParsed != null){
                 roomBeingParsed.setCreature(playerBeingParsed);
             }
+
 
             stack.push(playerBeingParsed);
         } else if (qName.equalsIgnoreCase("CreatureAction")) {
@@ -322,18 +327,20 @@ public class DungeonXMLHandler extends DefaultHandler {
             stack.pop();
         } else if (qName.equalsIgnoreCase("Sword")) {
             stack.pop();
-        } else if (qName.equalsIgnoreCase("Sword")){
-            stack.pop();
+        //} else if (qName.equalsIgnoreCase("Sword")){
+         //   stack.pop();
         } else if (qName.equalsIgnoreCase("Scroll")){
             stack.pop();
         } else if(qName.equalsIgnoreCase("Dungeon")) {
-            dungeonBeingParsed = null;
-
             //code能跑到这说明XML文件现在已经走到尾了,</Dungeon>, 现在Stack 和 StackA不应该有任何的Stack存在.
             assert(stack.empty());
             assert(stackA.empty());
         }
     }
+    public Dungeon getDungeon(){
+        return dungeonBeingParsed;
+    }
+
     @Override
     public void characters(char ch[], int start, int length) throws SAXException {
         data.append(new String(ch, start, length));

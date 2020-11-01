@@ -1,3 +1,4 @@
+package game;
 public class Creature extends Displayable{
     public Creature(){
         System.out.println("Constructing creature");
@@ -21,4 +22,7 @@ public class Creature extends Displayable{
         System.out.println("Setting hit action"+ha);
     }
 
+    public Char getrepr(){
+        return new Char('~');
+    }
 }

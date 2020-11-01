@@ -1,6 +1,7 @@
+package game;
 public class Sword extends Item{
     public Sword(String _name){
-        System.out.println("Constructing sword"+_name);
+        super.setName(_name);
     }
 
     public void setID(int room,int serial){

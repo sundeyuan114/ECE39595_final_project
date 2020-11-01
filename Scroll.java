@@ -1,6 +1,7 @@
+package game;
 public class Scroll extends Item{
     public Scroll(String _name){
-        System.out.println("Setting Scroll name to "+_name);
+        super.setName(_name);
     }
 
     public void setID(int room, int serial){

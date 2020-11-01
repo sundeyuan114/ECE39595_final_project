@@ -1,3 +1,4 @@
+package game;
 public class ItemAction extends Action{
     private String name;
     private String type;

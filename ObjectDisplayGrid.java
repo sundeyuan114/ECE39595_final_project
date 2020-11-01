@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
+import java.lang.*;
 
 public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubject {
 
@@ -11,20 +13,20 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
     private static final String CLASSID = ".ObjectDisplayGrid";
 
     private static AsciiPanel terminal;
-    private Char[][] objectGrid = null;
+    private Stack<Char>[][] objectGrid = null;
 
     private List<InputObserver> inputObservers = null;
 
     private static int height;
     private static int width;
-
+    @SuppressWarnings("unchecked")
     public ObjectDisplayGrid(int _width, int _height) {
         width = _width;
         height = _height;
 
         terminal = new AsciiPanel(width, height);
-
-        objectGrid = new Char[width][height];
+        objectGrid = (Stack<Char>[][]) new Stack[width][height];
+        // <- dungeon有四个数值 我直接放width 和 height了 只有这两个数值可以进来.
 
         initializeDisplay();
 
@@ -34,7 +36,7 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         // super.repaint();
         // terminal.repaint( );
         super.setVisible(true);
-        terminal.setVisible(true);se't'
+        terminal.setVisible(true);
         super.addKeyListener(this);
         inputObservers = new ArrayList<>();
         super.repaint();
@@ -77,7 +79,7 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
     }
 
     public final void initializeDisplay() {
-        Char ch = new Char('.');
+        Char ch = new Char(' ');
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 addObjectToDisplay(ch, i, j);
@@ -97,18 +99,34 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
     public void addObjectToDisplay(Char ch, int x, int y) {
         if ((0 <= x) && (x < objectGrid.length)) {
             if ((0 <= y) && (y < objectGrid[0].length)) {
-                objectGrid[x][y] = ch;
+                objectGrid[x][y].push(ch);
+                writeToTerminal(x, y);
+            }
+        }
+    }
+
+    //pop from x,y and display next on stack writeToTerminal(x, y);
+    public void removeObjectToDisplay(int x, int y){
+        if ((0 <= x) && (x < objectGrid.length)) {
+            if ((0 <= y) && (y < objectGrid[0].length)) {
+                objectGrid[x][y].pop();
                 writeToTerminal(x, y);
             }
         }
     }
 
     private void writeToTerminal(int x, int y) {
-        char ch = objectGrid[x][y].getChar();
+        char ch = objectGrid[x][y].peek().getChar();   //just add a peek in between :D
         terminal.write(ch, x, y);
         terminal.repaint();
     }
+
+
     public void setTopMessageHeight(int topHeight){
         System.out.println("Setting top message height to be "+topHeight);
     }
+
+//    public void receiveChar(Char ch){
+//        addObjectToDisplay(ch.getChar(),,);
+//    }
 }

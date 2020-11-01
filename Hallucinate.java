@@ -1,3 +1,4 @@
+package game;
 public class Hallucinate extends ItemAction{
     public Hallucinate(Item owner){
         super(owner);

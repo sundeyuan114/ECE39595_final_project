@@ -1,4 +1,7 @@
+package game;
 public class Displayable{
+    private int posX;
+    private int posY;
 
     public Displayable(){
         System.out.println("Constructing Displayable");
@@ -33,11 +36,11 @@ public class Displayable{
     }
 
     public void SetPosX(int x){
-        System.out.println("Setting PosX = "+x);
+        posX = x;
     }
 
     public void SetPosY(int y ){
-        System.out.println("Setting PosY ="+y);
+        posY = y;
     }
 
     public void SetWidth(int x){
@@ -48,4 +51,11 @@ public class Displayable{
         System.out.println("Setting height = "+y);
     }
 
+
+    public int getPosX() {
+        return posX;
+    }
+    public int getPosY() {
+        return posY;
+    }
 }

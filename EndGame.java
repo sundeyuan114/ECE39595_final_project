@@ -1,3 +1,4 @@
+package game;
 class EndGame extends CreatureAction{
     public EndGame(String _name, Creature owner){
         super(owner);

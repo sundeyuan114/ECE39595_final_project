@@ -1,5 +1,5 @@
 package game;
-public class Char {
+public class Char extends Displayable{
 
     public static final String CLASSID = "Char";
     private final char displayChar;
