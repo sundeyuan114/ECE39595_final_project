@@ -1,5 +1,6 @@
 package game;
 public class Monster extends Creature{
+    private Room room;
     public Monster(){
         System.out.println("Constructing monster object");
     }
@@ -13,10 +14,23 @@ public class Monster extends Creature{
         System.out.println("Setting room to "+ room+", serial number "+ serial);
     }
 
+    public void SetRoom(Room _room){
+        room = _room;
+    }
+
+    public void SetPosX(int posX) {
+        this.posX = posX + room.getPosX();
+    }
+
+    public void SetPosY(int posY) {
+        this.posY = posY + room.getPosY() + 2;
+    }
+
     @Override
     public String getName(){
         return name;
     }
+
 
     @Override
     public Char getrepr(){

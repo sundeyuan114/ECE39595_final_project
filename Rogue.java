@@ -60,14 +60,12 @@ public class Rogue implements Runnable {
             //things in it
             for (Creature d : r.getCreatures()){        //creatures
                 //System.out.println(""+d.getrepr().getChar()+d.getPosX()+d.getPosY()+d.getName()+" ");
-                displayGrid.addObjectToDisplay(d.getrepr(), r.getPosX() + d.getPosX() ,
-                        r.getPosY() + d.getPosY() + 2 );
+                displayGrid.addObjectToDisplay(d.getrepr(), d.getPosX() , d.getPosY());
             }
 
             for (Item d : r.getItems()){        //items
                 //System.out.println(""+d.getrepr().getChar()+d.getPosX()+d.getPosY()+d.getName());
-                displayGrid.addObjectToDisplay(d.getrepr(), r.getPosX() + d.getPosX() ,
-                        r.getPosY() + d.getPosY() + 2);
+                displayGrid.addObjectToDisplay(d.getrepr(), d.getPosX() , d.getPosY());
             }
         }
 

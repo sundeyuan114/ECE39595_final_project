@@ -1,11 +1,12 @@
 package game;
 public class Player extends Creature{
-    protected int posX, posY;
+    //private int posX, posY;
     private ObjectDisplayGrid odg;
     private Item armor;
     private Item sword;
     private Dungeon dungeon;
     private Char repr = new Char('@');
+    private Room room;
 
 
     public void setDungeon(Dungeon dungeon) {
@@ -58,13 +59,14 @@ public class Player extends Creature{
     }
 
     public void SetPosX(int posX) {
-        System.out.println("Setting player x to be "+posX);
-        this.posX = posX;
+        this.posX = posX + room.getPosX();
     }
 
     public void SetPosY(int posY) {
-        this.posY = posY;
-        System.out.println("Setting player y to be "+posY);
+        this.posY = posY + room.getPosY() + 2;
+    }
+    public void SetRoom(Room _room){
+        room = _room;
     }
 
     public void setODG(ObjectDisplayGrid odg) {

@@ -158,6 +158,7 @@ public class DungeonXMLHandler extends DefaultHandler {
             monsterBeingParsed = new Monster();
             monsterBeingParsed.setName(name);
             monsterBeingParsed.setID(roomNumb, serialNumb);
+            monsterBeingParsed.SetRoom(roomBeingParsed);
 
             //把这怪物趁着reference还在 加到他该在的位置里面去
             dungeonBeingParsed.addCreature(monsterBeingParsed);
@@ -180,6 +181,7 @@ public class DungeonXMLHandler extends DefaultHandler {
             }
             if (roomBeingParsed != null){
                 roomBeingParsed.setCreature(playerBeingParsed);
+                playerBeingParsed.SetRoom(roomBeingParsed);
             }
 
 
@@ -213,17 +215,20 @@ public class DungeonXMLHandler extends DefaultHandler {
             int serialNumb = Integer.parseInt(attributes.getValue("serial"));
             scrollBeingParsed = new Scroll(name);
 
+            scrollBeingParsed.SetRoom(roomBeingParsed);
             dungeonBeingParsed.addItem(scrollBeingParsed);
             scrollBeingParsed.setID(roomNumb,serialNumb);
             stack.push(scrollBeingParsed);
         } else if (qName.equalsIgnoreCase("Sword")){
             swordBeingParsed = new Sword(attributes.getValue("name"));
             dungeonBeingParsed.addItem(swordBeingParsed);
+            swordBeingParsed.SetRoom(roomBeingParsed);
             swordBeingParsed.setID(Integer.parseInt(attributes.getValue("room")),Integer.parseInt(attributes.getValue("serial")));
             stack.push(swordBeingParsed);
         } else if (qName.equalsIgnoreCase("Armor")){
             armorBeingParsed = new Armor(attributes.getValue("name"));
             dungeonBeingParsed.addItem(armorBeingParsed);
+            armorBeingParsed.SetRoom(roomBeingParsed);
             armorBeingParsed.setID(Integer.parseInt(attributes.getValue("room")),Integer.parseInt(attributes.getValue("serial")));
             stack.push(armorBeingParsed);
         } else {
@@ -243,7 +248,7 @@ public class DungeonXMLHandler extends DefaultHandler {
 
         //data.toString是两个Qname中间的话
         //<actionMessage>You have defeated the Troll!</actionMessage>
-        //下面的这个 data.tostring() 等同于 You have defeated the Troll!
+        // data.tostring() is equivalent to You have defeated the Troll!
         if (bposX) {
             int x = Integer.parseInt(data.toString());
             currentBeingParsed.SetPosX(x);

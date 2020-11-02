@@ -21,19 +21,29 @@ public class Room extends Structure{
         posX,posY+y-1 XXXX  x+posX-1,y+posY-1
          */
         // just make sure to return false when encountering any 'X
-
-        for (int i = this.getPosX(); i < this.getPosX() + width; i++){
-            if(i == x && (y == this.getPosY() || y == this.getPosY() + height -1)){
-                return false;
-            }
+        if (x >this.getPosX() && x < this.getPosX()+width-1 && y > this.getPosY() && y < this.getPosY()+height-1){
+            return true;
         }
-        for (int i = this.getPosY(); i < this.getPosY() + height; i++){
-            if(i == y && (x == this.getPosX() || x == this.getPosX() + width -1)){
-                return false;
-            }
-        }
+        return false;
 
-        return true;
+        //version 1
+//        for (int i = this.getPosX(); i < this.getPosX() + width; i++){
+//            if(i == x && (y == this.getPosY() || y == this.getPosY() + height -1)){
+//                return false;
+//            }
+//        }
+//        for (int i = this.getPosY(); i < this.getPosY() + height; i++){
+//            if(i == y && (x == this.getPosX() || x == this.getPosX() + width -1)){
+//                return false;
+//            }
+//        }
+
+        //version 2
+//        if(x == this.posX || (x == this.posX + this.width - 1) || y == this.posY || y == this.posY + height -1) {
+//            return false;
+//        }
+
+        //return true;      //both
     }
 
     //Setters

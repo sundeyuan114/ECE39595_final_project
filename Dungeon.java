@@ -26,12 +26,19 @@ public class Dungeon {
 
     // called by player
     public boolean validateMove(int x,int y){
-        ArrayList<Structure> structs = new ArrayList<Structure>();
-        structs.addAll(rooms);
-        structs.addAll(passages);
+//        ArrayList<Structure> structs = new ArrayList<Structure>();
+//        structs.addAll(rooms);
+//        structs.addAll(passages);
 
-        for (Structure struct: structs){
-            if (struct.checkMove(x,y)){
+        for (Passage p : passages){
+            if (p.checkMove(x,y-2)){            // IF BUG STEP 3/4 LOOK HERE!!!!!!!!!!!!!!
+                System.out.println("true");
+                return true;                  // we shoudln't actually do y-2,
+                // but instead change room and passages to display at y+2
+            }
+        }
+        for (Room r : rooms){
+            if (r.checkMove(x,y-2)){            // IF BUG STEP 3/4 LOOK HERE!!!!!!!!!!!!!!
                 return true;
             }
         }
