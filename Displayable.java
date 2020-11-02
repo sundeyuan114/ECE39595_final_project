@@ -1,7 +1,7 @@
 package game;
 public class Displayable{
-    private int posX;
-    private int posY;
+    protected int posX;
+    protected int posY;
 
     public Displayable(){
         System.out.println("Constructing Displayable");

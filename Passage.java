@@ -49,7 +49,7 @@ public class Passage extends Structure{
     }
     public int GetPosY() {
         if (posy.isEmpty() == false) {
-            return posx.poll();
+            return posy.poll();
         } else {
             return -1;// -1 should never exist. Since all number are positive. This is a bug.
         }

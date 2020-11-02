@@ -12,7 +12,7 @@ public class Room extends Structure{
         System.out.println("setting room ID "+ _name);
     }
     //called by dungeon
-    public boolean checkMove(int x, int y){ // 我们需要移动到的位置，
+    public boolean checkMove(int x, int y){ // place we need to go to
         /* Room indices as below
         posX,posY XXXXXX x+posX-1,y
             X                   X
@@ -47,6 +47,16 @@ public class Room extends Structure{
         System.out.println("setting item in room ");
     }
 
+    @Override
+    public void SetWidth(int x) {
+        this.width = x;
+    }
+
+    @Override
+    public void SetHeight(int y) {
+        this.height = y;
+    }
+
     //Getters
     public ArrayList<Creature> getCreatures() {
         return creatures;
@@ -54,5 +64,13 @@ public class Room extends Structure{
 
     public ArrayList<Item> getItems() {
         return items;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }

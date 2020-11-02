@@ -14,13 +14,12 @@ public class Rogue implements Runnable {
     public static final int TIMEPERLOOP = 1000000000 / FRAMESPERSECOND;
     private static ObjectDisplayGrid displayGrid = null;
     private Thread keyStrokePrinter;
-    private static final int WIDTH = 80;
-    private static final int HEIGHT = 40;
     private static Dungeon dungeon = null;          //one and only in each xml
 
     public Rogue(int width, int height,Dungeon _dungeon) {
         dungeon = _dungeon;
         displayGrid = new ObjectDisplayGrid(width, height);
+
     } // now we have the reference of dungeon in this scope
 
     @Override
@@ -29,38 +28,46 @@ public class Rogue implements Runnable {
         // therefore it should be in the beginning of the for loop
         Char roomChar = new Char('X');
         Char floorChar = new Char('.');
-        int initialY = 0,initialX = 0;
-        displayGrid.initializeDisplay();
 
-        for (Room r : dungeon.getRooms()) {
-            initialY += dungeon.getTopHeight();     //save space for topheight
-            for (int i = initialX;i < (initialX+dungeon.getWidth());i++){   //display room
+        displayGrid.initializeDisplay(); // just changed
+
+
+        for (Room r : dungeon.getRooms()) {         //walls
+            int initialY = 0, initialX = 0;
+            initialY += dungeon.getTopHeight();//save space for topheight
+            initialX += r.getPosX();
+            initialY += r.getPosY();
+            for (int i = initialX;i < (initialX+r.getWidth() -1);i++){   //display room
                 displayGrid.addObjectToDisplay(roomChar, i , initialY);
             }
-            for (int i = initialY; i <(initialY+dungeon.getGameHeight());i++){  //display room
+            for (int i = initialY; i <(initialY+r.getHeight() -1);i++){  //display room
                 displayGrid.addObjectToDisplay(roomChar,initialX,i);
             }
 
-            for (int i = initialX;i < (initialX+dungeon.getWidth());i++){   //display room
-                displayGrid.addObjectToDisplay(roomChar, i , initialY+dungeon.getGameHeight());
+            for (int i = initialX;i < (initialX+r.getWidth()  );i++){   //display room
+                displayGrid.addObjectToDisplay(roomChar, i , initialY+r.getHeight() -1);
             }
-            for (int i = initialY; i <(initialY+dungeon.getGameHeight());i++){  //display room
-                displayGrid.addObjectToDisplay(roomChar,initialX+dungeon.getWidth() ,i);
+            for (int i = initialY; i <(initialY+r.getHeight() -1);i++){  //display room
+                displayGrid.addObjectToDisplay(roomChar,initialX+r.getWidth() -1,i);
             }
-            for (int i = initialX + 1; i < initialX + dungeon.getWidth()-1; i++){
-                for(int j = initialY + 1; j < initialY + dungeon.getGameHeight()-1; j++){
+            //floor
+            for (int i = initialX + 1; i < initialX + r.getWidth()-1; i++){
+                for(int j = initialY + 1; j < initialY + r.getHeight()-1; j++){
                     displayGrid.addObjectToDisplay(floorChar, i , j);
                 }
             }
 
-
+            //things in it
             for (Creature d : r.getCreatures()){        //creatures
-                displayGrid.addObjectToDisplay(d.getrepr(), d.getPosX() ,
-                        d.getPosY());
+                //System.out.println(""+d.getrepr().getChar()+d.getPosX()+d.getPosY()+d.getName()+" ");
+                displayGrid.addObjectToDisplay(d.getrepr(), r.getPosX() + d.getPosX() ,
+                        r.getPosY() + d.getPosY() + 2 );
             }
+
             for (Item d : r.getItems()){        //items
-                displayGrid.addObjectToDisplay(d.getrepr(), d.getPosX() ,
-                        d.getPosY());
+                //System.out.println(""+d.getrepr().getChar()+d.getPosX()+d.getPosY()+d.getName());
+                displayGrid.addObjectToDisplay(d.getrepr(), r.getPosX() + d.getPosX() ,
+                        r.getPosY() + d.getPosY() + 2);
             }
         }
 
@@ -71,9 +78,12 @@ public class Rogue implements Runnable {
         Char passageChar = new Char('#');
 
         for (Passage p : dungeon.getPassages()){ //traverse through every passage
-            tempX = p.GetPosX(); //x location of the first point
+            int PassageQsize = p.getsize();
+
+            tempX = p.GetPosX(); //x location of the first point // one number already taken out
             tempY = p.GetPosY(); //y location of the first point
-            for (int i = 0; i < p.getsize() - 1;i++){ // represents how many connections we need to make between points.
+
+            for (int i = 0; i < PassageQsize - 1;i++){ // represents how many connections we need to make between points.
                 currentX = p.GetPosX();
                 currentY = p.GetPosY();
 
@@ -81,30 +91,33 @@ public class Rogue implements Runnable {
                 if(tempX - currentX == 0){// Y changes
                     if(tempY < currentY)
                         for(int l = tempY; l <= currentY; l++ ) {
-                            displayGrid.addObjectToDisplay(passageChar, tempX, l);
+                            displayGrid.addObjectToDisplay(passageChar, tempX, l + 2);
                     }else{
                         for(int l = tempY; l >= currentY; l-- ) {
-                            displayGrid.addObjectToDisplay(passageChar, tempX, l);
+                            displayGrid.addObjectToDisplay(passageChar, tempX, l + 2);
                         }
                     }
-                }else {// X changes
-                    if (tempX < currentX){
+                }else{// X changes
+                    if (tempX < currentX){ //move to right
+                        //System.out.println("X change tempX & currentX going right"+ tempX +" " + currentX);
                         for(int m = tempX; m <= currentX; m++){
-                            displayGrid.addObjectToDisplay(passageChar, m, tempY);
+                            displayGrid.addObjectToDisplay(passageChar, m, tempY + 2);
                         }
                     }else{ // tempX > currentX
-                        for(int m = tempX; m >= currentX; m --){
-                            displayGrid.addObjectToDisplay(passageChar, m, tempY);
+                        //System.out.println("X change tempX & currentX going left"+ tempX +" " + currentX);
+                        for(int m = tempX; m >= currentX; m--){
+                            displayGrid.addObjectToDisplay(passageChar, m, tempY + 2);
                         }
                     }
                 }
                 //update tempX
                 tempX = currentX;
                 tempY = currentY;
+
+                //System.out.println("tempX + tempY"  + tempX + ", "+ tempY);
             }
         } // We finish initialize everything so far at this point. However, User input receive & player movement should
         // be accomplish below.
-
 
 
 //            try {
@@ -138,7 +151,8 @@ public class Rogue implements Runnable {
 
         assert handler != null;
         Dungeon dungeon = handler.getDungeon();      //getter function
-        Rogue rogue = new Rogue(WIDTH, HEIGHT, dungeon);
+        Rogue rogue = new Rogue(dungeon.getWidth(), dungeon.getGameHeight()+
+                dungeon.getBottomHeight()+dungeon.getTopHeight(), dungeon);
         Thread rogueThread = new Thread(rogue);
         rogueThread.start();
 

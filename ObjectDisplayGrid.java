@@ -19,16 +19,21 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
 
     private static int height;
     private static int width;
+
     @SuppressWarnings("unchecked")
     public ObjectDisplayGrid(int _width, int _height) {
         width = _width;
         height = _height;
-
+        System.out.println("Calling from ObjectDisplayGrid constructor width = "+width +"height = "+height);
         terminal = new AsciiPanel(width, height);
-        objectGrid = (Stack<Char>[][]) new Stack[width][height];
-        // <- dungeon有四个数值 我直接放width 和 height了 只有这两个数值可以进来.
+        objectGrid =  new Stack[width][height];
+        for (int i = 0; i < width; i++){
+            for (int j = 0; j < height; j++){
+                objectGrid[i][j] = new Stack<Char>();
+            }
+        }
 
-        initializeDisplay();
+        //initializeDisplay();
 
         super.add(terminal);
         super.setSize(width * 9, height * 16);
@@ -99,6 +104,11 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
     public void addObjectToDisplay(Char ch, int x, int y) {
         if ((0 <= x) && (x < objectGrid.length)) {
             if ((0 <= y) && (y < objectGrid[0].length)) {
+                //System.out.println("x = "+x +"y= "+y+ " Ch " + ch.getChar());
+//                if (ch.getChar() == '@'){
+//                    System.out.println(objectGrid[x][y].peek().getChar());
+//                }
+                System.out.println(ch.getChar());
                 objectGrid[x][y].push(ch);
                 writeToTerminal(x, y);
             }
@@ -109,7 +119,9 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
     public void removeObjectToDisplay(int x, int y){
         if ((0 <= x) && (x < objectGrid.length)) {
             if ((0 <= y) && (y < objectGrid[0].length)) {
+                System.out.println(objectGrid[x][y].peek().getChar());
                 objectGrid[x][y].pop();
+
                 writeToTerminal(x, y);
             }
         }

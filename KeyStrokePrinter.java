@@ -46,7 +46,7 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
                 if (DEBUG > 1) {
                     System.out.println(CLASSID + ".processInput peek is " + ch);
                 }
-                if (ch == 'h' || ch == 'j' || ch == 'k'|| ch == 'l'){
+                if (ch == 'w' || ch == 'a' || ch == 's'|| ch == 'd'){
                     player.updateMove(ch);
                     //pop, move, push
                 }

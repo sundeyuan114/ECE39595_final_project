@@ -1,5 +1,7 @@
 package game;
 public class Creature extends Displayable{
+    protected char type = '@';
+    protected String  name = "creature";
     public Creature(){
         System.out.println("Constructing creature");
     }
@@ -23,6 +25,26 @@ public class Creature extends Displayable{
     }
 
     public Char getrepr(){
-        return new Char('~');
+        System.out.println("type = " +type);
+        return new Char(type);
+    }
+
+    @Override
+    public void setType(char t) {
+        type = t;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    @Override
+    public int getPosY() {
+        return super.getPosY();
+    }
+
+    @Override
+    public int getPosX() {
+        return super.getPosX();
     }
 }

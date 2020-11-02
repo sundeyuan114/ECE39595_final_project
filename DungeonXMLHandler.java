@@ -263,6 +263,7 @@ public class DungeonXMLHandler extends DefaultHandler {
         } else if (btype) {
             String typeString = data.toString();
             char type = typeString.charAt(0);
+            System.out.println("btype = " + type);
             currentBeingParsed.setType(type);
             btype = false;
         } else if (bhp) {
