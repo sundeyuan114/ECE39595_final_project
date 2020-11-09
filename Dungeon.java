@@ -23,7 +23,16 @@ public class Dungeon {
         bottomHeight = bottomHeit;
         System.out.println("Constructing Dungeon " + name);
     }
-
+    public Room findCurrentRoom (int x, int y){
+        for (Room currentRoom : rooms){
+            if(x > currentRoom.getPosX() && x < currentRoom.getPosX() + currentRoom.getWidth()-1 {
+                if(y > currentRoom.getPosY() && y < currentRoom.getPosY() + currentRoom.getHeight()-1){
+                    return currentRoom;
+                }
+            }
+        }
+        return null;
+    }
     // called by player
     public boolean validateMove(int x,int y){
 //        ArrayList<Structure> structs = new ArrayList<Structure>();

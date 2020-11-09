@@ -46,9 +46,15 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
                 if (DEBUG > 1) {
                     System.out.println(CLASSID + ".processInput peek is " + ch);
                 }
-                if (ch == 'w' || ch == 'a' || ch == 's'|| ch == 'd'){
+                if (ch == 'h' || ch == 'i' || ch == 'k'|| ch == 'j'){
                     player.updateMove(ch);
                     //pop, move, push
+                }
+                else if (ch == 'p'){
+                    player.itemPick(ch);
+                }
+                else if (ch == 'd'){
+                    player.itemDrop(inputQueue.poll());
                 }
                 else {
                     System.out.println("character " + ch + " entered on the keyboard");

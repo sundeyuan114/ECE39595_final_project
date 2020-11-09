@@ -47,6 +47,29 @@ public class Room extends Structure{
     }
 
     //Setters
+    //Item mostRecentItem = currentRoom.getRecentItem(stepOnBlock,this.getPosX(),this.getPosY());
+    public void dropCurrentItem(Item i){
+        items.add(i);
+    }
+    public Item getRecentItem(Char ch, int x, int y){
+        Item mostRecentItem = null;
+
+        int count = 0;
+        int currCount = -1;
+
+        for (Item i : items){
+
+            if (i.getrepr() == ch && i.getPosX() == x && i.getPosY() == y){
+                currCount = count;
+                mostRecentItem = i;
+            }
+            count ++;
+        }
+        if(currCount != -1) {
+            items.remove(currCount);
+        }
+        return mostRecentItem;
+    }
     public void setCreature(Creature creature){
         creatures.add(creature);
         System.out.println("setting creature in room ");

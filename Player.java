@@ -1,4 +1,5 @@
 package game;
+import java.util.*;
 public class Player extends Creature{
     //private int posX, posY;
     private ObjectDisplayGrid odg;
@@ -7,7 +8,7 @@ public class Player extends Creature{
     private Dungeon dungeon;
     private Char repr = new Char('@');
     private Room room;
-
+    private Queue<Item> pack = new Queue<Item>();
 
     public void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
@@ -31,21 +32,44 @@ public class Player extends Creature{
     public Char getrepr(){
         return repr;
     }
+//
+//     push, move pop here using methods in ODG
+    public void itemDrop(Char num){
+        int numb = Character.getNumericValue(num);
+        Room currentRoom = null;
+        currentRoom = Dungeon.findCurrentRoom(this.getPosX(), this.getPosY());
 
-    // push, move pop here using methods in ODG
+        for(int i = 0; i < numb; i++){
+            Item temp = pack.poll();
+            currentRoom.dropCurrentItem(temp);
+            odg[this.getPosX()][this.getPosY()].push(temp);
+
+        }
+    }
+}
+    public void itemPick(Char interact)
+    {
+        if(interact.equals('p')) {
+            Char stepOnBlock = odg.getStandingBlock(this.getPosX(), this.getPosY());
+            Room currentRoom = null;
+            currentRoom = Dungeon.findCurrentRoom(this.getPosX(), this.getPosY());
+            Item mostRecentItem = currentRoom.getRecentItem(stepOnBlock, this.getPosX(), this.getPosY());
+            pack.add(mostRecentItem);
+        }
+    }
     public void updateMove(char move){
         int x=0 ,y = 0;
         //checkmovement valid first
-        if (move == 'a'){
+        if (move == 'h'){
             x -= 1;
         }
-        else if (move == 's'){
+        else if (move == 'k'){
             y += 1;
         }
-        else if (move == 'w'){
+        else if (move == 'j'){
             y -= 1;
         }
-        else if (move == 'd'){
+        else if (move == 'l'){
             x += 1;
         }
         if (!dungeon.validateMove(posX+x,posY+y)){

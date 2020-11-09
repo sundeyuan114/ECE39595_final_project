@@ -46,6 +46,13 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         inputObservers = new ArrayList<>();
         super.repaint();
     }
+    public Char getStandingBlock(int x, int y){
+        Char temp = null;
+        temp = objectGrid[x][y].pop();
+        Char ret = objectGrid[x][y].pop();
+        objectGrid[x][y].push(temp);
+        return ret;
+    }
 
     @Override
     public void registerInputObserver(InputObserver observer) {
