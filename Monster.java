@@ -1,6 +1,9 @@
 package game;
 public class Monster extends Creature{
     private Room room;
+    private Char repr;
+
+
     public Monster(){
         System.out.println("Constructing monster object");
     }
@@ -34,19 +37,23 @@ public class Monster extends Creature{
 
     @Override
     public Char getrepr(){
+        return this.repr;
+    }
+
+    public void setrepr(String _name){
         if (name.equalsIgnoreCase("Troll")){
-            return new Char('T');
+            repr = new Char('T');
         }
         else if (name.equalsIgnoreCase("Snake")){
-            return new Char('S');
+            repr = new Char('S');
         }
         else if (name.equalsIgnoreCase("Hobgoblin"))
         {
-            return new Char('H');
+            repr = new Char('H');
         }
         else{
             System.out.println("Monster repr return error");
-            return new Char('~');
+            repr = new Char('~');
         }
     }
 }

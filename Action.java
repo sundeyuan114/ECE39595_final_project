@@ -1,14 +1,33 @@
 package game;
 public class Action{
+    private String massege;
+    private int intV;
+    private char charV;
+    private ItemAction itemAction;
+
+    public void setItemAction (ItemAction itA){
+        this.itemAction = itA;
+    }
+    public ItemAction getItemAction(){
+        return this.itemAction;
+    }
+
     public void setMessage(String msg){
-        System.out.println("Setting action message "+msg);
+        massege = msg;
     }
-
+    public String getMessage (){
+        return massege;
+    }
     public void setIntValue(int v){
-        System.out.println("Setting int value "+v);
+        intV = v;
     }
-
+    public int getIntValue (){
+        return intV;
+    }
     public void setCharValue(char c){
-        System.out.println("Setting char value "+ c);
+        charV = c;
+    }
+    public char getCharValue (){
+        return charV;
     }
 }

@@ -51,6 +51,7 @@ public class Room extends Structure{
     public void dropCurrentItem(Item i){
         items.add(i);
     }
+
     public Item getRecentItem(Char ch, int x, int y){
         Item mostRecentItem = null;
 
@@ -58,10 +59,13 @@ public class Room extends Structure{
         int currCount = -1;
 
         for (Item i : items){
-
-            if (i.getrepr() == ch && i.getPosX() == x && i.getPosY() == y){
+            System.out.println(""+i.getrepr().getChar());
+            System.out.println(""+i.getPosX()+i.getPosY());
+            System.out.println(""+x+y);
+            if (i.getrepr().getChar() == ch.getChar() && i.getPosX() == x && i.getPosY() == y){
                 currCount = count;
                 mostRecentItem = i;
+                System.out.println("Item found");
             }
             count ++;
         }
@@ -70,9 +74,14 @@ public class Room extends Structure{
         }
         return mostRecentItem;
     }
+
     public void setCreature(Creature creature){
         creatures.add(creature);
         System.out.println("setting creature in room ");
+    }
+
+    public void removeCreature(Creature c){
+        creatures.remove(c);
     }
 
     public void setItem(Item item){

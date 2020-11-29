@@ -32,6 +32,12 @@ public class Rogue implements Runnable {
         displayGrid.initializeDisplay(); // just changed
 
 
+        displayGrid.addSentenceToDisplay("Remaining Hp:"+dungeon.getPlayer().getHp()+"    Score:0",0, 0);
+        displayGrid.addSentenceToDisplay("Pack :", 0, dungeon.getTopHeight()+dungeon.getGameHeight() + 1);
+        displayGrid.addSentenceToDisplay("Info :", 0, dungeon.getTopHeight()+dungeon.getGameHeight() +1+dungeon.getBottomHeight()/2);
+
+
+
         for (Room r : dungeon.getRooms()) {         //walls
             int initialY = 0, initialX = 0;
             initialY += dungeon.getTopHeight();//save space for topheight
@@ -62,10 +68,11 @@ public class Rogue implements Runnable {
                 //System.out.println(""+d.getrepr().getChar()+d.getPosX()+d.getPosY()+d.getName()+" ");
                 displayGrid.addObjectToDisplay(d.getrepr(), d.getPosX() , d.getPosY());
             }
-
+            System.out.println("HEREEE");
             for (Item d : r.getItems()){        //items
                 //System.out.println(""+d.getrepr().getChar()+d.getPosX()+d.getPosY()+d.getName());
                 displayGrid.addObjectToDisplay(d.getrepr(), d.getPosX() , d.getPosY());
+                System.out.println("HERE"+d.getrepr());
             }
         }
 

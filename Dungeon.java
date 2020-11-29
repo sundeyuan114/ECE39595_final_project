@@ -23,9 +23,16 @@ public class Dungeon {
         bottomHeight = bottomHeit;
         System.out.println("Constructing Dungeon " + name);
     }
-    public Room findCurrentRoom (int x, int y){
+
+    public void removeCreature(Creature cr){
+        creatures.remove(cr);
+    }
+
+    public Room findCurrentRoom (int x, int y1){
+        int y = y1-2;
         for (Room currentRoom : rooms){
-            if(x > currentRoom.getPosX() && x < currentRoom.getPosX() + currentRoom.getWidth()-1 {
+            System.out.println("Room X Y"+ currentRoom.getPosX()+" "+currentRoom.getPosY());
+            if(x > currentRoom.getPosX() && x < currentRoom.getPosX() + currentRoom.getWidth()-1) {
                 if(y > currentRoom.getPosY() && y < currentRoom.getPosY() + currentRoom.getHeight()-1){
                     return currentRoom;
                 }

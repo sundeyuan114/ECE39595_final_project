@@ -46,6 +46,13 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         inputObservers = new ArrayList<>();
         super.repaint();
     }
+    public void addSentenceToDisplay (String str, int x, int y){
+        for(int i = 0; i < str.length(); i++){
+            char temp = str.charAt(i);
+            this.addObjectToDisplay(new Char(temp),x+i,y);
+        }
+    }
+    // picks up item
     public Char getStandingBlock(int x, int y){
         Char temp = null;
         temp = objectGrid[x][y].pop();
@@ -53,6 +60,17 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         objectGrid[x][y].push(temp);
         return ret;
     }
+    // drop item
+    public void dropOnBlock(Char item, int x,int y){
+        Char temp = null;
+        temp = objectGrid[x][y].pop();
+        if (temp.getChar() != '@'){
+            System.out.println("Bug in drop on block");
+        }
+        objectGrid[x][y].push(item);
+        objectGrid[x][y].push(temp);
+    }
+
 
     @Override
     public void registerInputObserver(InputObserver observer) {
@@ -130,7 +148,7 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         }
     }
 
-    private void writeToTerminal(int x, int y) {
+    public void writeToTerminal(int x, int y) {
         char ch = objectGrid[x][y].peek().getChar();   //just add a peek in between :D
         terminal.write(ch, x, y);
         terminal.repaint();
@@ -144,4 +162,5 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
 //    public void receiveChar(Char ch){
 //        addObjectToDisplay(ch.getChar(),,);
 //    }
+
 }

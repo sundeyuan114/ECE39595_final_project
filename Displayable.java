@@ -2,9 +2,17 @@ package game;
 public class Displayable{
     protected int posX;
     protected int posY;
+    private int intValue;
+    protected CreatureAction CAction;
 
+    public void setItemAction (ItemAction i){
+    }
     public Displayable(){
         System.out.println("Constructing Displayable");
+    }
+
+    public ItemAction getItemAction (){
+        return null;
     }
 
     public void setInvisible(){
@@ -32,7 +40,10 @@ public class Displayable{
     }
 
     public void setIntValue(int v){
-        System.out.println("Setting int value "+ v);
+        intValue = v;
+    }
+    public int getIntValue(){
+        return intValue;
     }
 
     public void SetPosX(int x){
@@ -57,5 +68,13 @@ public class Displayable{
     }
     public int getPosY() {
         return posY;
+    }
+
+    public void setCreatureAction(CreatureAction CAction) {
+        this.CAction = CAction;
+    }
+
+    public CreatureAction getCreatureAction(){
+        return this.CAction;
     }
 }

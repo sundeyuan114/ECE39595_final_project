@@ -12,4 +12,10 @@ public class ItemAction extends Action{
     public void setType(String _type){
         type = _type;
     }
+    public String getName (){
+        return name;
+    }
+    public String getType (){
+        return type;
+    }
 }

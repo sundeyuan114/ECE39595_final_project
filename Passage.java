@@ -12,6 +12,12 @@ public class Passage extends Structure{
     private ArrayList<Integer> Aposx = new ArrayList<Integer>();
     private ArrayList<Integer> Aposy = new ArrayList<Integer>();
 
+    public ArrayList<Integer> getArrayX (){
+        return Aposx;
+    }
+    public ArrayList<Integer> getArrayY (){
+        return Aposy;
+    }
     public Passage(){
         System.out.println("Constructing passage");
     }

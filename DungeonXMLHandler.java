@@ -159,6 +159,7 @@ public class DungeonXMLHandler extends DefaultHandler {
             monsterBeingParsed.setName(name);
             monsterBeingParsed.setID(roomNumb, serialNumb);
             monsterBeingParsed.SetRoom(roomBeingParsed);
+            monsterBeingParsed.setrepr(name);
 
             //把这怪物趁着reference还在 加到他该在的位置里面去
             dungeonBeingParsed.addCreature(monsterBeingParsed);
@@ -196,6 +197,9 @@ public class DungeonXMLHandler extends DefaultHandler {
             creatureActionBeingParsed.setType(type);
             creatureActionBeingParsed.setName(name);
 
+            // Let creature being parsed have reference to this creatureAction
+            stack.peek().setCreatureAction(creatureActionBeingParsed);
+
             //stack是存<Displayable>的, StackA是存Action的,注意.
             stackA.push(creatureActionBeingParsed);
         } else if (qName.equalsIgnoreCase("ItemAction")){
@@ -218,18 +222,21 @@ public class DungeonXMLHandler extends DefaultHandler {
             scrollBeingParsed.SetRoom(roomBeingParsed);
             dungeonBeingParsed.addItem(scrollBeingParsed);
             scrollBeingParsed.setID(roomNumb,serialNumb);
+            roomBeingParsed.setItem(scrollBeingParsed);
             stack.push(scrollBeingParsed);
         } else if (qName.equalsIgnoreCase("Sword")){
             swordBeingParsed = new Sword(attributes.getValue("name"));
             dungeonBeingParsed.addItem(swordBeingParsed);
             swordBeingParsed.SetRoom(roomBeingParsed);
             swordBeingParsed.setID(Integer.parseInt(attributes.getValue("room")),Integer.parseInt(attributes.getValue("serial")));
+            roomBeingParsed.setItem(swordBeingParsed);
             stack.push(swordBeingParsed);
         } else if (qName.equalsIgnoreCase("Armor")){
             armorBeingParsed = new Armor(attributes.getValue("name"));
             dungeonBeingParsed.addItem(armorBeingParsed);
             armorBeingParsed.SetRoom(roomBeingParsed);
             armorBeingParsed.setID(Integer.parseInt(attributes.getValue("room")),Integer.parseInt(attributes.getValue("serial")));
+            roomBeingParsed.setItem(armorBeingParsed);
             stack.push(armorBeingParsed);
         } else {
             // BUG
@@ -326,7 +333,10 @@ public class DungeonXMLHandler extends DefaultHandler {
         } else if(qName.equalsIgnoreCase("CreatureAction")){
             stackA.pop();
         } else if (qName.equalsIgnoreCase("ItemAction")){
-            stackA.pop();
+            currentBeingParsed.setItemAction((ItemAction)stackA.pop());
+            System.out.println("ItemActionParsetoItem " + currentBeingParsed);
+            System.out.println("ItemFields " + currentBeingParsed.getItemAction());
+            System.out.println("currentbp.class = "+currentBeingParsed.getClass().getName());
         }else if(qName.equalsIgnoreCase("Rooms")){
             //do nothing.
         } else if (qName.equalsIgnoreCase("Armor")) {
