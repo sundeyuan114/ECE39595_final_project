@@ -29,6 +29,7 @@ public class Dungeon {
     }
 
     public Room findCurrentRoom (int x, int y1){
+        //change absolute position to relative position.
         int y = y1-2;
         for (Room currentRoom : rooms){
             System.out.println("Room X Y"+ currentRoom.getPosX()+" "+currentRoom.getPosY());

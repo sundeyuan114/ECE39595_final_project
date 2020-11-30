@@ -70,6 +70,39 @@ public class ObjectDisplayGrid extends JFrame implements KeyListener, InputSubje
         objectGrid[x][y].push(item);
         objectGrid[x][y].push(temp);
     }
+    public List<Integer> getRandomAccessiblePos (){
+        System.out.println("Entered getRandomAccessiblePos");
+        Random rand = new Random(); //instance of random class
+        int upperbound = 1;        
+        //Char dian = new Char('.');
+        //Char jiahao = new Char('+');
+        //Char jinghao = new Char('#');
+        ArrayList<Integer> posX = new ArrayList<> ();
+        ArrayList<Integer> posY = new ArrayList<> ();
+        //int int_random = rand.nextInt(upperbound); 
+        System.out.println("getwidth+getheight "+objectGrid.length + "  " + objectGrid[0].length);
+
+        for (int i = 0; i< objectGrid.length; i++){
+            for (int j = 0; j < objectGrid[0].length; j++){
+                System.out.println(objectGrid[i][j].peek().getChar());
+                if (objectGrid[i][j].peek().getChar() == '.' 
+                || objectGrid[i][j].peek().getChar() == '+'
+                || objectGrid[i][j].peek().getChar() == '#' ) {
+                    upperbound ++;
+                    posX.add(i);
+                    posY.add(j);
+                    System.out.println("case FOUND");
+                }
+            }
+        }
+        System.out.println(upperbound);
+        int int_random = rand.nextInt(upperbound); 
+        List <Integer> ret = new ArrayList<> ();
+        ret.add(posX.get(int_random));
+        ret.add(posY.get(int_random));
+
+        return ret;
+    }
 
 
     @Override

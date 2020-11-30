@@ -65,6 +65,9 @@ public class Player extends Creature{
     }
     public void chooseSetArmor (Char ind){
         int indNumb = Character.getNumericValue(ind.getChar());
+        if(pack.get(indNumb - 1).getName() != "Armor"){
+            return;
+        }
         if(armor != null){
             pack.add(armor);
         }
@@ -74,6 +77,9 @@ public class Player extends Creature{
     }
     public void chooseSetSword(Char ind){
         int indNumb = Character.getNumericValue(ind.getChar());
+        if(pack.get(indNumb - 1).getName() != "Sword"){
+            return;
+        }
         if(sword != null){
             pack.add(sword);
         }
@@ -86,11 +92,25 @@ public class Player extends Creature{
             pack.add(armor);
             armor = null;
             packUpdate();
+            System.out.println("tryTakeOffArmor "+pack.size());
         }else{
             odg.addSentenceToDisplay(fillSpaceTillEnd("No armor Equipped, Cannot take off Armor.", 
             dungeon.getWidth()-6), 6, dungeon.getTopHeight()+dungeon.getGameHeight()+dungeon.getBottomHeight()-1);
         }
     }
+
+    public void tryTakeOffSword(){
+        if (sword != null){
+            pack.add(sword);
+            sword = null;
+            packUpdate();
+            System.out.println("tryTakeOffSword "+pack.size());
+        }else{
+            odg.addSentenceToDisplay(fillSpaceTillEnd("No Sword Equipped, Cannot take off Armor.", 
+            dungeon.getWidth()-6), 6, dungeon.getTopHeight()+dungeon.getGameHeight()+dungeon.getBottomHeight()-1);
+        }
+    }
+    
     public String fillSpaceTillEnd (String str, int maxLen){
         String ret = str;
         for (int i = 0; i < maxLen - str.length(); i++){
@@ -100,6 +120,9 @@ public class Player extends Creature{
     }
     public void tryReadScroll (Char ind){
         int indNumb = Character.getNumericValue(ind.getChar());
+        if(pack.get(indNumb - 1).getName() != "Scroll"){
+            return;
+        }
         if (pack.get(indNumb - 1).getName() == "Scroll");{
             Item scrol = pack.get(indNumb - 1);
             System.out.println(scrol.getName());
@@ -114,6 +137,8 @@ public class Player extends Creature{
                     odg.addSentenceToDisplay(fillSpaceTillEnd("Armor int value has been added by"
                     + String.valueOf(scrol.getItemAction().getIntValue()), dungeon.getWidth() - 6) ,6, 2+dungeon.getGameHeight()+3);
                 }
+                pack.remove(indNumb -1);
+                packUpdate();
             }
             System.out.println("+++"+scrol.getItemAction().getName());
             if (scrol.getItemAction().getName().equalsIgnoreCase("Hallucinate")){
@@ -161,7 +186,7 @@ public class Player extends Creature{
         for(Item i : pack){
             count++;
             System.out.println("pack here"+i.getName());
-            String str = count+": "+i.getName()+"";
+            String str = count+": "+((i.getName() != "Scroll")?i.getIntValue():"") +" " +i.getName()+"";
             odg.addSentenceToDisplay(str,initX,dungeon.getTopHeight()+dungeon.getGameHeight() + 1);
             initX += (str.length()+1);
         }
@@ -172,8 +197,12 @@ public class Player extends Creature{
     }
 
     public void itemDrop(Char num){
+   
         System.out.println("inside ItemDrop"+num.getChar());
         int numb = Character.getNumericValue(num.getChar());
+        if(numb > pack.size()){
+            return;
+        }
         Room currentRoom = null;
         currentRoom = dungeon.findCurrentRoom(this.getPosX(), this.getPosY());
         Item temp = pack.get(numb - 1);
@@ -375,21 +404,49 @@ public class Player extends Creature{
         boolean won = false;
         int totalDamageToMonster = 0;
         int totalDamageToPlayer = 0;
+        boolean bdrop = false;
 
         while (!(this.getHp() <= 0 || monsterFight.getHp() <= 0)){
             System.out.println("player hp" + hp + "Monster hp" + monsterFight.getHp());
             int myAttack = rand.nextInt(sword == null ? maxHit + 1: maxHit +sword.getIntValue() + 1); // SWORD damage calculate here
             System.out.println("myAttack =" + myAttack);
-            if (this.CAction.getName().equalsIgnoreCase("droppack")){//===============================
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            if (bdrop == false && this.CAction.getName().equalsIgnoreCase("droppack")){//===============================
                 //drop first item, and display actionMessage associated with the CreatureAction
                 dropPack();
                 packUpdate();
                 odg.addSentenceToDisplay("Info: "+CAction.getMessage(), 0,
                         dungeon.getTopHeight()+dungeon.getGameHeight() +1+dungeon.getBottomHeight()/2);
+                bdrop = true;
             }
+
             int monsterAttack = rand.nextInt(monsterFight.maxHit + 1);
             monsterFight.setHp(monsterFight.getHp() - myAttack);
             totalDamageToMonster += myAttack;
+            if(monsterFight.CAction != null){
+
+            if(monsterFight.CAction.getName().equalsIgnoreCase("Teleport")){
+                // if creature dies here, we kill it that's it.
+                if(monsterFight.getHp() <= 0){
+                    room.removeCreature(monsterFight);
+                    dungeon.removeCreature(monsterFight);
+                    odg.removeObjectToDisplay(monsterFight.getPosX(), monsterFight.getPosY());
+                }else{ // we need to tp the creature to another location.
+                    List<Integer> monsterToGo = odg.getRandomAccessiblePos();
+                    // remove monster from current location.
+                    // add monster to new location
+                    // perhaps change room.
+                    odg.removeObjectToDisplay(monsterFight.getPosX(), monsterFight.getPosY());
+                    odg.addObjectToDisplay(monsterFight.getrepr(), monsterToGo.get(0), monsterToGo.get(1));
+                    // above is on canvas, so no need to -2. every coordinate is absolute to odg.
+                    monsterFight.SetPosX(monsterToGo.get(0));
+                    monsterFight.SetPosY(monsterToGo.get(1) - 2);
+                    monsterFight.SetRoom(dungeon.findCurrentRoom(monsterToGo.get(0), monsterToGo.get(1)));
+                    
+                    break;
+                }
+            }
+        }
             if(monsterFight.getHp() > 0){
                 this.setHp(this.getHp() - (monsterAttack - ((armor == null)?0:armor.getIntValue()))); //Armor reduce damage calculate here
                 totalDamageToPlayer += (monsterAttack - ((armor == null)?0:armor.getIntValue()));
@@ -458,7 +515,8 @@ public class Player extends Creature{
         return false;
     }
     //======================================================================
-    public void ChangeDisplayType(){
+    public void ChangeDisplayType()
+    {
         this.repr = new Char('+');
         this.odg.addObjectToDisplay(repr,this.getPosX(),this.getPosY());
         this.odg.writeToTerminal(this.getPosX(),this.getPosY());

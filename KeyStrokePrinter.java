@@ -111,6 +111,9 @@ public class KeyStrokePrinter implements InputObserver, Runnable {
                 else if (ch == 'c'){
                     player.tryTakeOffArmor();
                 }
+                else if (ch == 'v'){
+                    player.tryTakeOffSword();
+                }
                 else {
                     System.out.println("character " + ch + " entered on the keyboard");
                 }

@@ -17,7 +17,15 @@ public class Item extends Displayable{
         System.out.println("Setting owner to "+ owner);
     }
     public void setName(String _name){
-        name = _name;
+        if (_name.contains("Sword")){
+            name = "Sword";
+        }    else    if (_name.contains("Armor")){
+            name = "Armor";
+        }
+        else    if (_name.contains("Scroll")){
+            name = "Scroll";
+        }
+        
     }
 
     public String getName() {

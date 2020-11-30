@@ -1,14 +1,21 @@
 package game;
+
+import java.util.ArrayList;
+
 public class Creature extends Displayable {
     protected int maxHit;
     protected int hp;
     protected char type = ' ';
     protected String name = "creature";
     protected int hpMove;
+    //private ArrayList <CreatureAction> deathActionArray = new ArrayList<CreatureAction>();
+    //private ArrayList <CreatureAction> hitActionArray = new ArrayList<CreatureAction>();
+
 
     public Creature() {
         System.out.println("Constructing creature");
     }
+
 
     @Override
     public void setHp(int h) {
@@ -28,14 +35,6 @@ public class Creature extends Displayable {
 
     public int getHp() {
         return hp;
-    }
-
-    public void setDeathAction(CreatureAction da){
-        System.out.println("Setting death action to " + da);
-    }
-
-    public void setHitAction(CreatureAction ha){
-        System.out.println("Setting hit action"+ha);
     }
 
     public Char getrepr(){
